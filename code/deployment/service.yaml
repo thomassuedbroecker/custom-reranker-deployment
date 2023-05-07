@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: reranker-service
+  namespace: reranker
+  labels:
+    app: reranker
+spec:
+  selector:
+    app: reranker
+  ports:
+    - port: 50052
+      targetPort: 50052
+      name: http
+  type: NodePort
