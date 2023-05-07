@@ -21,11 +21,21 @@ function login_to_ibm_cloud () {
     ibmcloud target -g $IBM_CLOUD_RESOURCE_GROUP
 }
 
+function connect_to_cluster () {
+    echo ""
+    echo "*********************"
+    echo "Connect to cluster $CLUSTER_NAME"
+    echo "*********************"
+    echo ""
+    ibmcloud ks cluster config -c $CLUSTER_NAME
+}
+
 #**********************************************************************************
 # Execution
 # *********************************************************************************
 
 login_to_ibm_cloud
+connect_to_cluster
 
 echo "1. Create namespace"
 kubectl apply -f ./deployment/namespace.yaml
