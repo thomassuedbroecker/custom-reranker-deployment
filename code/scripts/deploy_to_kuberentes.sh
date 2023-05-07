@@ -57,6 +57,9 @@ kubectl apply -f ./deployment/configmap.yaml
 echo "6. Create service"
 kubectl apply -f ./deployment/service.yaml
 
+echo "7. Create service loadbalancer"
+kubectl apply -f ./deployment/service-loadbalancer.yaml
+
 # delete
 # kubectl delete -f ./deployment/deployment.yaml
 # kubectl apply -f ./deployment/configmap.yaml
