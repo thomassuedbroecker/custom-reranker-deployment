@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # **************** Global variables
-HOME_PATH=$(pwd)
+export HOME_PATH=$(pwd)
 source $HOME_PATH/../.env
 
 # **********************************************************************************
