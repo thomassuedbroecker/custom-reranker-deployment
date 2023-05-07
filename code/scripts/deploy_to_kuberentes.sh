@@ -30,7 +30,7 @@ function connect_to_cluster () {
     ibmcloud ks cluster config -c $CLUSTER_NAME
 }
 
-function pull_secret () {
+function pull_secret_and_sa () {
     echo ""
     echo "*********************"
     echo "Create pull secret and patch default service account"
@@ -64,7 +64,7 @@ kubectl get secret all-icr-io -n default -o yaml | sed 's/default/reranker/g' | 
 
 echo "4. Patch the service account to in the default namespace."
 kubectl get secrets -n reranker | grep icr-io
-#ibmcloud ks cluster pull-secret apply --cluster $CLUSTER_NAME
+pull_secret_and_sa
 
 echo "5. Create configmap"
 kubectl apply -f $HOME_PATH/../deployment/configmap.yaml
