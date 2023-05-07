@@ -6,7 +6,8 @@ export HOME_PATH=$(pwd)
 # IBM Cloud - variables
 source "$HOME_PATH"/../.env
 
-export RERANKER_DOCKERFILE_NAME="Dockerfile_custom.cpu"
+#export RERANKER_DOCKERFILE_NAME="Dockerfile_custom.cpu"
+export RERANKER_DOCKERFILE_NAME="Dockerfile.cpu"
 export INIT_CONTAINER_DOCKERFILE_NAME="Dockerfile.init-container"
 
 # **********************************************************************************
