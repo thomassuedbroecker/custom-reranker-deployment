@@ -48,7 +48,7 @@ function build_and_push_init_container () {
     if [[ "${IMAGE}" == "${VERIFY}" ]]; then
         echo "Container image ${IMAGE} does exist!"
     else       
-        docker build -f $HOME_PATH"/../deployment/$INIT_CONTAINER_DOCKERFILE_NAME \
+        docker build -f $HOME_PATH"/../dockerfiles/$INIT_CONTAINER_DOCKERFILE_NAME" \
                      -t $CONTAINER_IMAGE_URL .  
     fi
     
