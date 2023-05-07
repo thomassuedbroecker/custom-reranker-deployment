@@ -34,3 +34,30 @@ sh build_and_push_container_images.sh
 cd $HOME_PATH/code/scripts
 sh deploy_to_kubernetes.sh
 ```
+
+### Step 5: Wait until the load balancer service is available
+
+```sh
+kubectl get svc reranker-nlb -n reranker
+```
+
+* Example output:
+
+```sh
+NAME           TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)           AGE
+reranker-nlb   LoadBalancer   172.21.101.92   XXXXXXXXXXX   50052:31945/TCP   26m
+```
+
+### Step 6: Invoke the endpoint
+
+```sh
+HOST_NAME=$(kubectl get svc reranker-nlb -n reranker --ignore-not-found --output 'jsonpath={.status.loadBalancer.ingress[*].hostname}')
+echo $HOST_NAME
+curl http://$HOST_NAME:50052/rerankers
+```
+
+* Example output:
+
+```sh
+[{"reranker_id":"SeqClassificationReranker","parameters":[{"parameter_id":"model","name":"Model","description":"Path to model","type":"String","value":"ibm/re2g-reranker-nq","options":null,"range":null},{"parameter_id":"max_num_documents","name":"Maximum number of retrieved documents","description":null,"type":"Numeric","value":-1,"options":null,"range":[-1,100,1]},{"parameter_id":"max_batch_size","name":"Maximum batch size","description":null,"type":"Numeric","value":128,"options":null,"range":[1,256,8]}]},{"reranker_id":"ColBERTReranker","parameters":[{"parameter_id":"model","name":"Model","description":"Path to model","type":"String","value":"drdecr","options":null,"range":null},{"parameter_id":"max_num_documents","name":"Maximum number of retrieved documents","description":null,"type":"Numeric","value":-1,"options":null,"range":[-1,100,1]},{"parameter_id":"doc_maxlen","name":"doc_maxlen","description":"maximum document length (sub-word units)","type":"Numeric","value":180,"options":null,"range":null},{"parameter_id":"query_maxlen","name":"query_maxlen","description":"maximum query length (sub-word units)","type":"Numeric","value":32,"options":null,"range":null}]}]
+```

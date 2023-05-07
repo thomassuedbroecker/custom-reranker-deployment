@@ -78,9 +78,18 @@ kubectl apply -f $HOME_PATH/../deployment/service.yaml
 echo "7. Create service loadbalancer"
 kubectl apply -f $HOME_PATH/../deployment/service-loadbalancer.yaml
 
-# delete
+# Delete
+# ======================================
 # kubectl delete -f ./deployment/deployment.yaml
-# kubectl apply -f ./deployment/configmap.yaml
-# kubectl apply -f ./deployment/service.yaml
+# kubectl delete -f ./deployment/configmap.yaml
+# kubectl delete -f ./deployment/service.yaml
+# kubectl delete -f ./deployment/service-loadbalancer.yaml
 
-
+# IBM Cloud internal access with nodeport
+# ======================================
+# kubectl describe service reranker-service -n reranker 
+# kubectl describe service reranker-nlb -n reranker 
+# WORKER_NODE_IP=$(ibmcloud oc workers --cluster $CLUSTER_NAME  | grep "Ready" | awk '{print $2;}' | head -n 1)
+# NODEPORT=$(kubectl get svc reranker-service -n reranker --ignore-not-found --output 'jsonpath={.spec.ports[*].nodePort}')
+# echo $NODEPORT
+# echo "URL: http://$WORKER_NODE_IP:$NODEPORT/rerankers" 
