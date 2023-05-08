@@ -1,7 +1,6 @@
 # Custom reranker deployment
 
-Deploy the [reranker](https://github.com/primeqa/primeqa/tree/main/primeqa/components) to Kubernetes.
-
+Deploy the [reranker](https://github.com/primeqa/primeqa/tree/main/primeqa/components) to a Kubernetes cluster. In a VPC on IBM Cloud. You can setup a IBM Cloud Kubernetes cluster for example by following the steps in my blog post [`Use Terraform to create a VPC and a Kubernetes Cluster on IBM Cloud`](https://suedbroecker.net/2022/07/05/use-terraform-to-create-a-vpc-and-a-kubernetes-cluster-on-ibm-cloud/).
 
 ### Prerequisites
 
