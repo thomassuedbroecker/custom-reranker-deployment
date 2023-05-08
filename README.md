@@ -2,7 +2,8 @@
 
 Deploy the [reranker](https://github.com/primeqa/primeqa/tree/main/primeqa/components) to Kubernetes.
 
-### Prerequistes
+
+### Prerequisites
 
 * Create a `Kubernetes Cluster` on IBM Cloud
 * Install Docker Desktop
