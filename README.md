@@ -1,8 +1,8 @@
 # Custom reranker deployment
 
-Deploy the reranker to Kubernetes.
+Deploy the [reranker](https://github.com/primeqa/primeqa/tree/main/primeqa/components) to Kubernetes.
 
-### Prequistes
+### Prerequistes
 
 * Create a `Kubernetes Cluster` on IBM Cloud
 * Install Docker Desktop
