@@ -39,7 +39,7 @@ spec:
             valueFrom:
               configMapKeyRef:
                 name: reranker-confmap
-                key: MODEL_URL
+                key: MODEL_DIR
           volumeMounts:
           - name: store
             mountPath: /store/checkpoints
