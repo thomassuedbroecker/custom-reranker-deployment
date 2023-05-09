@@ -7,5 +7,5 @@ data:
   STORE_DIR: "/store" 
   mode: "rest"
   require_ssl: "false"
-  MODEL_URL: "drder"
-  MODEL_DIR: "YOUR_MODEL_DIR"
+  MODEL_URL: "drdecr"
+  MODEL_DIR: "https://huggingface.co/PrimeQA/DrDecr_XOR-TyDi_whitebox/resolve/main/DrDecr.dnn -P /store/checkpoints/drdecr' && wget https://huggingface.co/PrimeQA/DrDecr_XOR-TyDi_whitebox/resolve/main/DrDecr.dnn"
