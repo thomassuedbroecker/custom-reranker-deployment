@@ -7,5 +7,5 @@ data:
   STORE_DIR: "/store" 
   mode: "rest"
   require_ssl: "false"
-  MODEL_URL: "YOUR_MODEL_URL"
+  MODEL_URL: "drder"
   MODEL_DIR: "YOUR_MODEL_DIR"
