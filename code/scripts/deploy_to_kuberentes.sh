@@ -72,10 +72,10 @@ kubectl apply -f $HOME_PATH/../deployment/configmap.yaml
 echo "6. Create deployment"
 kubectl apply -f $HOME_PATH/../deployment/deployment.yaml
 
-echo "6. Create service"
+echo "7. Create service"
 kubectl apply -f $HOME_PATH/../deployment/service.yaml
 
-echo "7. Create service loadbalancer"
+echo "8. Create service loadbalancer"
 kubectl apply -f $HOME_PATH/../deployment/service-loadbalancer.yaml
 
 # Delete
