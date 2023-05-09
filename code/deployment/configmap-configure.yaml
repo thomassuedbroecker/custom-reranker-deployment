@@ -1,0 +1,11 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: reranker-confmap
+  namespace: reranker
+data:
+  STORE_DIR: "/store" 
+  mode: "rest"
+  require_ssl: "false"
+  MODEL_URL: "YOUR_MODEL_URL"
+  MODEL_DIR: "YOUR_MODEL_DIR"

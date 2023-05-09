@@ -1,0 +1,95 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: reranker
+  namespace: reranker
+  labels:
+      app: reranker
+spec:
+  selector:
+    matchLabels:
+      app: reranker
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: reranker
+        version: v1
+    spec:
+      volumes:
+      - name: store
+        emptyDir: {}
+      - name: indexes
+        emptyDir: {}
+      - name: models
+        emptyDir: {}
+      - name: cache
+        emptyDir: {}
+      initContainers:
+        - name: install-store
+          image: YOUR_IMAGE_URL
+          imagePullPolicy: Always
+          env:
+          - name: MODEL_URL
+            valueFrom:
+              configMapKeyRef:
+                name: reranker-confmap
+                key: MODEL_URL
+          - name: MODEL_DIR
+            valueFrom:
+              configMapKeyRef:
+                name: reranker-confmap
+                key: MODEL_URL
+          volumeMounts:
+          - name: store
+            mountPath: /store/checkpoints
+          - name: indexes
+            mountPath: /store/indexes
+          - name: models
+            mountPath: /store/models
+          - name: cache
+            mountPath: /cache/huggingface
+          securityContext:
+            allowPrivilegeEscalation: false
+      containers:
+      - name: reranker
+        image: icr.io/reanker-tsuedbro/reanker-tsuedbro:v1
+        imagePullPolicy: Always
+        livenessProbe:
+          exec:
+            command: ["sh", "-c", "ls"]
+          initialDelaySeconds: 20
+        readinessProbe:
+          exec:
+            command: ["sh", "-c", "ls"]
+          initialDelaySeconds: 40
+        env:
+        - name: STORE_DIR
+          valueFrom:
+            configMapKeyRef:
+              name: reranker-confmap
+              key: STORE_DIR
+        - name: mode
+          valueFrom:
+            configMapKeyRef:
+              name: reranker-confmap
+              key: mode
+        - name: require_ssl
+          valueFrom:
+            configMapKeyRef:
+              name: reranker-confmap
+              key: require_ssl
+        volumeMounts:
+        - name: store
+          mountPath: /store/checkpoints
+        - name: indexes
+          mountPath: /store/indexes
+        - name: models
+          mountPath: /store/models
+        - name: cache
+          mountPath: /cache/huggingface
+        securityContext:
+          allowPrivilegeEscalation: false   
+        ports:
+        - containerPort: 50052
+      restartPolicy: Always

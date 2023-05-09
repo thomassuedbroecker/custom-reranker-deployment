@@ -1,0 +1,19 @@
+FROM registry.access.redhat.com/ubi8/ubi:latest
+
+RUN yum update -y && \
+    yum install -y wget && \
+     yum install -y curl 
+
+COPY docker_entry.sh .
+COPY generate_env-config.sh .
+
+WORKDIR /store
+
+RUN mkdir checkpoints && \
+    mkdir indexes && \
+    mkdir models
+
+USER 2000 
+
+CMD ["/bin/sh","docker_entrypoint.sh"]
+    
