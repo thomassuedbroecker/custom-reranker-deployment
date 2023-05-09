@@ -30,7 +30,7 @@ spec:
           image: icr.io/reanker-tsuedbro/init-tsuedbro:v1
           imagePullPolicy: Always
           command: ["/bin/sh"]
-          args: ["-c", "echo 'Setup a model' && echo $(whoami) && echo $(ls) && echo '****' && echo 'Using: wget https://huggingface.co/PrimeQA/DrDecr_XOR-TyDi_whitebox/resolve/main/DrDecr.dnn -P /store/checkpoints' && wget https://huggingface.co/PrimeQA/DrDecr_XOR-TyDi_whitebox/resolve/main/DrDecr.dnn -P /store/checkpoints"]
+          args: ["-c", "echo 'Setup a model' && echo $(whoami) && echo $(ls) && echo '****' && mkdir /store/checkpoints/drdecr && echo 'Using: wget https://huggingface.co/PrimeQA/DrDecr_XOR-TyDi_whitebox/resolve/main/DrDecr.dnn -P /store/checkpoints/drdecr' && wget https://huggingface.co/PrimeQA/DrDecr_XOR-TyDi_whitebox/resolve/main/DrDecr.dnn -P /store/checkpoints"]
           volumeMounts:
           - name: store
             mountPath: /store/checkpoints
