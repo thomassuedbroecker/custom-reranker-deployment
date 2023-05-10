@@ -80,7 +80,7 @@ spec:
         - name: cache
           mountPath: /cache/huggingface
         securityContext:
-          allowPrivilegeEscalation: false   
+        - allowPrivilegeEscalation: false   
         ports:
         - containerPort: 50052
       restartPolicy: Always
