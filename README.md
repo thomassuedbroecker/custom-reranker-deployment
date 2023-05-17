@@ -2,7 +2,7 @@
 
 The objective of this project is to deploy the [Reranker](https://github.com/primeqa/primeqa/tree/main/primeqa/components) to a Kubernetes cluster in a VPC or free Kubernetes cluster on IBM Cloud and access the REST API of the Reranker.
 
-The [Reranker](https://github.com/primeqa/primeqa/tree/main/primeqa/components) is a component of [PrimeQA]((https://github.com/primeqa/primeqa/tree/main/primeqa).
+The [Reranker](https://github.com/primeqa/primeqa/tree/main/primeqa/components) is a component of [PrimeQA](https://github.com/primeqa/primeqa/tree/main/primeqa).
 
 > _"**PrimeQA** is a public open-source repository that enables researchers and developers to train state-of-the-art models for question answering (QA). By using PrimeQA, a researcher can replicate the experiments outlined in a paper published in the latest NLP conference while also enjoying the capability to download pre-trained models (from an online repository) and run them on their own custom data."_
 
@@ -45,10 +45,109 @@ In the image below, we see what we need to deploy when we only want to use the [
 
 When we deploy the Reranker, we need to ensure that a model is loaded and is an accessible folder structure for a store.
 
+To realize this functionality we going to use an init container and a "runtime" container. (sure the [init container](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/) takes time at the startup but this is an easy and simple approach for a starting point )
+
+![](/images/reranker-in-primeqa-3.png)
+
+Here is an simple `Deployment.yaml` which can be optimized.
+
+```yaml
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: reranker
+  namespace: reranker
+  labels:
+      app: reranker
+spec:
+  selector:
+    matchLabels:
+      app: reranker
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: reranker
+        version: v1
+    spec:
+      volumes:
+      - name: store
+        emptyDir: {}
+      - name: indexes
+        emptyDir: {}
+      - name: models
+        emptyDir: {}
+      - name: cache
+        emptyDir: {}
+      initContainers:
+        - name: install-store
+          image: icr.io/reranker-tsuedbro/init-tsuedbro:v1
+          imagePullPolicy: Always
+          command: ["/bin/sh"]
+          args: ["-c", "echo 'Setup a model' && echo $(whoami) && echo $(ls) && echo '****' && mkdir /store/checkpoints/drdecr && echo 'Using: wget https://huggingface.co/PrimeQA/DrDecr_XOR-TyDi_whitebox/resolve/main/DrDecr.dnn -P /store/checkpoints/drdecr' && wget https://huggingface.co/PrimeQA/DrDecr_XOR-TyDi_whitebox/resolve/main/DrDecr.dnn -P /store/checkpoints"]
+          volumeMounts:
+          - name: store
+            mountPath: /store/checkpoints
+          - name: indexes
+            mountPath: /store/indexes
+          - name: models
+            mountPath: /store/models
+          - name: cache
+            mountPath: /cache/huggingface
+          securityContext:
+            allowPrivilegeEscalation: false
+      containers:
+      - name: reranker
+        image: icr.io/reanker-tsuedbro/reranker-tsuedbro:v1
+        imagePullPolicy: Always
+        livenessProbe:
+          exec:
+            command: ["sh", "-c", "ls"]
+          initialDelaySeconds: 20
+        readinessProbe:
+          exec:
+            command: ["sh", "-c", "curl http://localhost:50052/rerankers"]"]
+          initialDelaySeconds: 40
+        env:
+        - name: STORE_DIR
+          valueFrom:
+            configMapKeyRef:
+              name: reranker-confmap
+              key: STORE_DIR
+        - name: mode
+          valueFrom:
+            configMapKeyRef:
+              name: reranker-confmap
+              key: mode
+        - name: require_ssl
+          valueFrom:
+            configMapKeyRef:
+              name: reranker-confmap
+              key: require_ssl
+        volumeMounts:
+        - name: store
+          mountPath: /store/checkpoints
+        - name: indexes
+          mountPath: /store/indexes
+        - name: models
+          mountPath: /store/models
+        - name: cache
+          mountPath: /cache/huggingface
+        securityContext:
+          allowPrivilegeEscalation: false   
+        ports:
+        - containerPort: 50052
+      restartPolicy: Always
+```
+
+
+
 ### 3. Prerequisites
 
-* Create a `Kubernetes Cluster` on IBM Cloud
-* Install Docker Desktop
+You need to have the following in place to follow the example setup steps.
+
+* `Kubernetes Cluster` on IBM Cloud
+* Docker Desktop
 
 ### 4. Setup
 
