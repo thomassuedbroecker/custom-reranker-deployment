@@ -57,7 +57,7 @@ spec:
         imagePullPolicy: Always
         livenessProbe:
           exec:
-            command: ["sh", "-c", "ls"]
+            command: ["sh", "-c", "curl http://localhost:50052/rerankers"]
           initialDelaySeconds: 20
         readinessProbe:
           exec:
