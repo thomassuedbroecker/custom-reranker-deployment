@@ -10,10 +10,10 @@ The [Reranker](https://github.com/primeqa/primeqa/tree/main/primeqa/components) 
 
 ## Content 
 
-[1. Simplified architecture overview](#1-simplified-architecture-overview)
-[2. Kubernetes deployment](#2-kubernetes-deployment)
-[3. Prerequisites](#3-prerequisites)
-[4. Setup an example instance](#4-setup-a-example-instance)
+* [1. Simplified architecture overview](#1-simplified-architecture-overview)
+* [2. Kubernetes deployment](#2-kubernetes-deployment)
+* [3. Prerequisites](#3-prerequisites)
+* [4. Setup an example instance](#4-setup-a-example-instance)
 
 ## 1. Simplified architecture overview
 
