@@ -1,6 +1,6 @@
 # Custom Reranker deployment
 
-The objective of this project is to deploy the [Reranker](https://github.com/primeqa/primeqa/tree/main/primeqa/components) to a Kubernetes cluster in a VPC or free Kubernetes cluster on IBM Cloud and access the REST API of the Reranker.
+The objective of this project is to deploy the [Reranker](https://github.com/primeqa/primeqa/tree/main/primeqa/components) to a Kubernetes cluster in a VPC on IBM Cloud and access the REST API of the Reranker.
 
 The [Reranker](https://github.com/primeqa/primeqa/tree/main/primeqa/components) is a component of [PrimeQA](https://github.com/primeqa/primeqa/tree/main/primeqa).
 
@@ -220,7 +220,7 @@ sh build_and_push_container_images.sh
 
 ### Step 4: Deploy the `reranker` to the cluster
 
-Before you execute this automation ensure you set the right values also in the [deployment.yaml](/code/deployment/deployment.yaml) file for your container images.
+Before you execute this automation, ensure you set the correct values also in the [deployment.yaml](/code/deployment/deployment.yaml) file for your container images.
 
 * Runtime: "`icr.io/reanker-tsuedbro/reranker-tsuedbro:v1`"
   Related environment variables:`$CR/$CR_REPOSITORY/$CI_NAME`
@@ -235,13 +235,13 @@ sh deploy_to_kuberentes.sh
 
 These are the steps of the automation:
 
-1. Create namespace
+1. Create a namespace
 2. Get existing secrets to access the IBM 
 3. Copy the IBM Cloud container registry 
 4. Patch the service account to in the 
-5. Create configmap
-6. Create deployment
-7. Create service
+5. Create a config map
+6. Create the deployment
+7. Create a service
 8. Create service loadbalancer > Only work for a Kubernetes Cluster in VPC
 
 * Example output:
@@ -255,10 +255,10 @@ API endpoint: https://cloud.ibm.com
 ...
 
 *********************
-Connect to cluster mycluster-free
+Connect to cluster mycluster
 *********************
 ...
-The configuration for mycluster-free was downloaded successfully.
+The configuration for mycluster was downloaded successfully.
 1. Create namespace
 namespace/reranker created
 2. Get existing screts to access the IBM Cloud Registry  in the default namespace
