@@ -198,16 +198,101 @@ export CI_TAG="v1"
 
 ### Step 3: Build and push containers to the IBM Cloud registry 
 
+Use the values of your environment.
+
+Example values:
+
+* export CR=icr.io
+* export CR_REPOSITORY=reanker-tsuedbro
+* export CI_NAME=reranker-tsuedbro
+* export CI_INIT_NAME=init-tsuedbro
+
+* Runtime: "`icr.io/reanker-tsuedbro/reranker-tsuedbro:v1`"
+  Related environment variables:`$CR/$CR_REPOSITORY/$CI_NAME`
+
+* Init: "`icr.io/reranker-tsuedbro/init-tsuedbro:v1`"
+  Related environment variables:`$CR/$CR_REPOSITORY/$CI_INIT_NAME`
+
 ```sh
 cd $HOME_PATH/code/scripts
 sh build_and_push_container_images.sh
 ```
 
-### Step 4: Deploy the reranker to the cluster
+### Step 4: Deploy the `reranker` to the cluster
+
+Before you execute this automation ensure you set the right values also in the [deployment.yaml](/code/deployment/deployment.yaml) file for your container images.
+
+* Runtime: "`icr.io/reanker-tsuedbro/reranker-tsuedbro:v1`"
+  Related environment variables:`$CR/$CR_REPOSITORY/$CI_NAME`
+
+* Init: "`icr.io/reranker-tsuedbro/init-tsuedbro:v1`"
+  Related environment variables:`$CR/$CR_REPOSITORY/$CI_INIT_NAME`
 
 ```sh
 cd $HOME_PATH/code/scripts
-sh deploy_to_kubernetes.sh
+sh deploy_to_kuberentes.sh
+```
+
+These are the steps of the automation:
+
+1. Create namespace
+2. Get existing secrets to access the IBM 
+3. Copy the IBM Cloud container registry 
+4. Patch the service account to in the 
+5. Create configmap
+6. Create deployment
+7. Create service
+8. Create service loadbalancer > Only work for a Kubernetes Cluster in VPC
+
+* Example output:
+
+```sh
+*********************
+loginIBMCloud
+*********************
+
+API endpoint: https://cloud.ibm.com
+...
+
+*********************
+Connect to cluster mycluster-free
+*********************
+...
+The configuration for mycluster-free was downloaded successfully.
+1. Create namespace
+namespace/reranker created
+2. Get existing screts to access the IBM Cloud Registry  in the default namespace
+all-icr-io   kubernetes.io/dockerconfigjson   1      146m
+3. Copy the IBM Cloud container registry access secret to the reranker namespace
+secret/all-icr-io created
+4. Patch the service account to in the default namespace.
+all-icr-io   kubernetes.io/dockerconfigjson   1      0s
+*********************
+Create pull secret and patch default service account
+*********************
+
+secret/custom-reg-credentials created
+serviceaccount/default patched
+serviceaccount/default patched
+apiVersion: v1
+imagePullSecrets:
+- name: custom-reg-credentials
+- name: all-icr-io
+kind: ServiceAccount
+metadata:
+  creationTimestamp: "2023-XXX:04:XXX"
+  name: default
+  namespace: reranker
+  resourceVersion: "2753"
+  uid: XXX
+5. Create configmap
+configmap/reranker-confmap created
+6. Create deployment
+deployment.apps/reranker created
+7. Create service
+service/reranker-service created
+8. Create service loadbalancer
+service/reranker-nlb created
 ```
 
 ### Step 5: Wait until the load balancer service is available
