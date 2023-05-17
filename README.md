@@ -8,12 +8,12 @@ The [Reranker](https://github.com/primeqa/primeqa/tree/main/primeqa/components) 
 
 > _"The [Reranker](https://github.com/primeqa/primeqa/tree/main/primeqa/components) component takes a question and a list of documents and returns a rescored and reranked list of documents."_
 
-### Content 
-
+## Content 
 
 [1. Simplified architecture overview](#1-simplified-architecture-overview)
 [2. Kubernetes deployment](#2-kubernetes-deployment)
-
+[3. Prerequisites](#3-prerequisites)
+[4. Setup an example instance](#4-setup-a-example-instance)
 
 ## 1. Simplified architecture overview
 
@@ -35,8 +35,6 @@ Prime QA contains four components.
 * Reranker
 
 ![](/images/reranker-in-primeqa-1.png)
-
-You can set up an IBM Cloud Kubernetes cluster, for example, by following the steps in my blog post [`Use Terraform to create a VPC and a Kubernetes Cluster on IBM Cloud`](https://suedbroecker.net/2022/07/05/use-terraform-to-create-a-vpc-and-a-kubernetes-cluster-on-ibm-cloud/).
 
 In the image below, we see what we need to deploy when we only want to use the [Reranker](https://github.com/primeqa/primeqa/tree/main/primeqa/components) component.
 
@@ -150,7 +148,9 @@ You need to have the following in place to follow the example setup steps.
 * [`Kubernetes Cluster` on IBM Cloud](https://cloud.ibm.com/kubernetes/catalog/create)
 * [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 
-## 4. Setup
+You can set up an IBM Cloud Kubernetes cluster, for example, by following the steps in my blog post [`Use Terraform to create a VPC and a Kubernetes Cluster on IBM Cloud`](https://suedbroecker.net/2022/07/05/use-terraform-to-create-a-vpc-and-a-kubernetes-cluster-on-ibm-cloud/).
+
+## 4. Setup a example instance
 
 In this example the names of the container images for the init and runtime containers a hard coded in the [deployment.yaml](/code/deployment/configmap.yaml) file and you need to change them to your values. 
 
