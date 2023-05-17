@@ -1,12 +1,12 @@
 # Custom Reranker deployment
 
-The objective of this project is to deploy the [Reranker](https://github.com/primeqa/primeqa/tree/main/primeqa/components) to a Kubernetes cluster in a VPC or free Kubernetes on IBM Cloud and access the REST API of the Reranker.
+The objective of this project is to deploy the [Reranker](https://github.com/primeqa/primeqa/tree/main/primeqa/components) to a Kubernetes cluster in a VPC or free Kubernetes cluster on IBM Cloud and access the REST API of the Reranker.
 
 The [Reranker](https://github.com/primeqa/primeqa/tree/main/primeqa/components) is a component of [PrimeQA]((https://github.com/primeqa/primeqa/tree/main/primeqa).
 
-> _"**PrimeQA** is a public open source repository that enables researchers and developers to train state-of-the-art models for question answering (QA). By using PrimeQA, a researcher can replicate the experiments outlined in a paper published in the latest NLP conference while also enjoying the capability to download pre-trained models (from an online repository) and run them on their own custom data."_
+> _"**PrimeQA** is a public open-source repository that enables researchers and developers to train state-of-the-art models for question answering (QA). By using PrimeQA, a researcher can replicate the experiments outlined in a paper published in the latest NLP conference while also enjoying the capability to download pre-trained models (from an online repository) and run them on their own custom data."_
 
-> _"The [Reranker](https://github.com/primeqa/primeqa/tree/main/primeqa/components) component takes a question and a list of documents and return a rescored and reranked list of documents."_
+> _"The [Reranker](https://github.com/primeqa/primeqa/tree/main/primeqa/components) component takes a question and a list of documents and returns a rescored and reranked list of documents."_
 
 ### Content 
 
@@ -20,13 +20,13 @@ In the [create-primeqa-app](https://github.com/primeqa/create-primeqa-app/blob/m
 
 The image below shows the dependencies of applications and components when you use a `Docker Compose` to run Prime QA on your local machine.
 
-In the image below you see 3 applications.
+In the image below, you see three applications.
 
 * UI
 * Prime QA
 * Orchestrator
 
-Prime QA contains four components
+Prime QA contains four components.
 
 * Indexer
 * Retreivers
@@ -35,15 +35,15 @@ Prime QA contains four components
 
 ![](/images/reranker-in-primeqa-1.png)
 
-You can set up an IBM Cloud Kubernetes cluster for example by following the steps in my blog post [`Use Terraform to create a VPC and a Kubernetes Cluster on IBM Cloud`](https://suedbroecker.net/2022/07/05/use-terraform-to-create-a-vpc-and-a-kubernetes-cluster-on-ibm-cloud/).
+You can set up an IBM Cloud Kubernetes cluster for example, by following the steps in my blog post [`Use Terraform to create a VPC and a Kubernetes Cluster on IBM Cloud`](https://suedbroecker.net/2022/07/05/use-terraform-to-create-a-vpc-and-a-kubernetes-cluster-on-ibm-cloud/).
 
-In the image below we see want we need to deploy when we only want to use the [Reranker](https://github.com/primeqa/primeqa/tree/main/primeqa/components) component.
+In the image below, we see what we need to deploy when we only want to use the [Reranker](https://github.com/primeqa/primeqa/tree/main/primeqa/components) component.
 
 ![](/images/reranker-in-primeqa-2.png)
 
 ### 2. Kubernetes deployment
 
-When we are going to deploy the Reranker we need to ensure that a model is loaded and is an accessible folder structure for a store.
+When we deploy the Reranker, we need to ensure that a model is loaded and is an accessible folder structure for a store.
 
 ### 3. Prerequisites
 
