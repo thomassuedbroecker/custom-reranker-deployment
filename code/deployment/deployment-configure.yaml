@@ -53,7 +53,7 @@ spec:
             allowPrivilegeEscalation: false
       containers:
       - name: reranker
-        image: icr.io/reanker-tsuedbro/reanker-tsuedbro:v1
+        image: icr.io/reranker-tsuedbro/reranker-tsuedbro:v1
         imagePullPolicy: Always
         livenessProbe:
           exec:
