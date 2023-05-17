@@ -4,7 +4,7 @@ The objective of this project is to deploy the [Reranker](https://github.com/pri
 
 The [Reranker](https://github.com/primeqa/primeqa/tree/main/primeqa/components) is a component of [PrimeQA](https://github.com/primeqa/primeqa/tree/main/primeqa).
 
-> _"**PrimeQA** is a public open-source repository that enables researchers and developers to train state-of-the-art models for question answering (QA). By using PrimeQA, a researcher can replicate the experiments outlined in a paper published in the latest NLP conference while also enjoying the capability to download pre-trained models (from an online repository) and run them on their own custom data."_
+> _"**PrimeQA** is a public open-source repository that enables researchers and developers to train state-of-the-art models for question answering (QA). Using PrimeQA, a researcher can replicate the experiments outlined in a paper published in the latest NLP conference while also enjoying the capability to download pre-trained models (from an online repository) and run them on their own custom data."_
 
 > _"The [Reranker](https://github.com/primeqa/primeqa/tree/main/primeqa/components) component takes a question and a list of documents and returns a rescored and reranked list of documents."_
 
@@ -12,9 +12,10 @@ The [Reranker](https://github.com/primeqa/primeqa/tree/main/primeqa/components) 
 
 
 [1. Simplified architecture overview](#1-simplified-architecture-overview)
+[2. Kubernetes deployment](#2-kubernetes-deployment)
 
 
-### 1. Simplified architecture overview
+## 1. Simplified architecture overview
 
 In the [create-primeqa-app](https://github.com/primeqa/create-primeqa-app/blob/main/docker-compose-cpu.yaml) repository, you will find how to run prime qa locally with "Docker Compose". Furthermore, by inspecting the source code in the repositories, you can find the following dependencies of applications and components.
 
@@ -35,21 +36,23 @@ Prime QA contains four components.
 
 ![](/images/reranker-in-primeqa-1.png)
 
-You can set up an IBM Cloud Kubernetes cluster for example, by following the steps in my blog post [`Use Terraform to create a VPC and a Kubernetes Cluster on IBM Cloud`](https://suedbroecker.net/2022/07/05/use-terraform-to-create-a-vpc-and-a-kubernetes-cluster-on-ibm-cloud/).
+You can set up an IBM Cloud Kubernetes cluster, for example, by following the steps in my blog post [`Use Terraform to create a VPC and a Kubernetes Cluster on IBM Cloud`](https://suedbroecker.net/2022/07/05/use-terraform-to-create-a-vpc-and-a-kubernetes-cluster-on-ibm-cloud/).
 
 In the image below, we see what we need to deploy when we only want to use the [Reranker](https://github.com/primeqa/primeqa/tree/main/primeqa/components) component.
 
 ![](/images/reranker-in-primeqa-2.png)
 
-### 2. Kubernetes deployment
+## 2. Kubernetes deployment
 
 When we deploy the Reranker, we need to ensure that a model is loaded and is an accessible folder structure for a store.
 
-To realize this functionality we going to use an init container and a "runtime" container. (sure the [init container](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/) takes time at the startup but this is an easy and simple approach for a starting point )
+To realize this functionality, we will use an init container and a "runtime" container. (sure, the [init container](https://kubernetes.io/docs/concepts/workloads/pods/init-containers/) takes time at the startup, but this is an easy and straightforward approach for a starting point )
 
 ![](/images/reranker-in-primeqa-3.png)
 
-Here is an simple `Deployment.yaml` which can be optimized.
+Here is a simple `Deployment.yaml` which can be optimized.
+
+> Be aware that the basic [Prime-QA Dockerfile](/code/dockerfiles/Dockerfile.custom-cpu) has no-curl installed. That is the reason why I created an example file for the CPU configuration.
 
 ```yaml
 kind: Deployment
@@ -140,16 +143,21 @@ spec:
       restartPolicy: Always
 ```
 
-
-
-### 3. Prerequisites
+## 3. Prerequisites
 
 You need to have the following in place to follow the example setup steps.
 
-* `Kubernetes Cluster` on IBM Cloud
-* Docker Desktop
+* [`Kubernetes Cluster` on IBM Cloud](https://cloud.ibm.com/kubernetes/catalog/create)
+* [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 
-### 4. Setup
+## 4. Setup
+
+In this example the names of the container images for the init and runtime containers a hard coded in the [deployment.yaml](/code/deployment/configmap.yaml) file and you need to change them to your values. 
+
+* Runtime: "`icr.io/reanker-tsuedbro/reranker-tsuedbro:v1`"
+  Related environment variables:`$CR/$CR_REPOSITORY/$CI_NAME`
+* Init: "`icr.io/reranker-tsuedbro/init-tsuedbro:v1`"
+  Related environment variables:`$CR/$CR_REPOSITORY/$CI_INIT_NAME`
 
 ### Step 1: Clone project
 
@@ -163,6 +171,29 @@ git clone https://github.com/thomassuedbroecker/custom-reranker-deployment.git
 ```sh
 cd $HOME_PATH/custom-reranker-deployment/code
 cat .env_template > .env
+```
+
+* The environment values:
+
+```sh
+# IBM Cloud
+export IBM_CLOUD_RESOURCE_GROUP=reranker
+export IBM_CLOUD_REGION=us-east
+export IBM_CLOUD_API_KEY=XXX
+
+# Kubernetes
+export CLUSTER_NAME=XXX
+
+# IBM Cloud Container Registry
+export CR_RESOURCE_GROUP=reranker
+export CR_REGION=global
+export CR=icr.io
+export CR_USER=iamapikey
+export CR_REPOSITORY=reanker-XXX
+export CR_EMAIL=xxxx@xxx
+export CI_NAME="reranker-XXX"
+export CI_INIT_NAME="init-XXX"
+export CI_TAG="v1"
 ```
 
 ### Step 3: Build and push containers to the IBM Cloud registry 
